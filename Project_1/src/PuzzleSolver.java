@@ -1,26 +1,61 @@
-package main;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 public final class PuzzleSolver {
     public static void main(String[] args) {
-        if (args.length > 0 && args.length < 2) {
-            new PuzzleSolver(args[0]);
+        if (args.length == 2) {
+            String arg1 = args[0];
+            String arg2 = args[1];
+
+            if (arg1.equalsIgnoreCase("--file") || arg1.equalsIgnoreCase("-f")) {
+                new PuzzleSolver(args[1]); // Flag
+            } else {
+                System.out.println("Usage: java PuzzleSolver [-f | --file <pathToPuzzlesFile.txt>]");
+            }
         } else {
-            System.out.println("Usage: java PuzzleSolver <pathToPuzzlesFile.txt>");
+            commandLineUi();
         }
+    }
+
+    public static void commandLineUi() {
+        Scanner kb = new Scanner(System.in);
+        boolean again = false;
+        do {
+            System.out.println("+-----------------+");
+            System.out.println("| 8-puzzle solver |");
+            System.out.println("+-----------------+");
+            System.out.println("(1) Generate random puzzle");
+            System.out.println("(2) Enter custom 8-puzzle");
+            System.out.println("(3) Quit");
+            System.out.print("===> ");
+            int input = kb.nextInt();
+
+            switch (input) {
+                case 1:
+                    System.out.println("Generating random puzzle ...");
+                    break;
+                case 2:
+                    System.out.println("Custom Puzzle");
+                    break;
+                case 3:
+                    break;
+                default:
+                    again = true;
+                    break;
+            }
+        } while(again);
     }
 
     private List<Puzzle> puzzles = new LinkedList<>();
 
     public PuzzleSolver(String fileName) {
         readInPuzzles(fileName);
-//        System.out.print(puzzles.get(0));
+        System.out.print(puzzles.get(0));
     }
 
     /**

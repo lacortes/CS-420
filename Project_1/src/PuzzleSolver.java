@@ -13,7 +13,12 @@ public final class PuzzleSolver {
             String arg2 = args[1];
 
             if (arg1.equalsIgnoreCase("--file") || arg1.equalsIgnoreCase("-f")) {
-                new PuzzleSolver(args[1]); // Flag
+                List<Puzzle> puzzles =  readInPuzzles(arg2);
+                Puzzle puzzle = puzzles.get(0);
+                System.out.println(puzzle);
+                List<Action> actions =  puzzle.getActions();
+                System.out.println(actions.size());
+
             } else {
                 System.out.println("Usage: java PuzzleSolver [-f | --file <pathToPuzzlesFile.txt>]");
             }
@@ -34,6 +39,7 @@ public final class PuzzleSolver {
             System.out.println("(3) Quit");
             System.out.print("===> ");
             int input = kb.nextInt();
+            kb.nextLine();
 
             switch (input) {
                 case 1:
@@ -41,6 +47,7 @@ public final class PuzzleSolver {
                     break;
                 case 2:
                     System.out.println("Custom Puzzle");
+                    customPuzzle();
                     break;
                 case 3:
                     break;
@@ -51,35 +58,65 @@ public final class PuzzleSolver {
         } while(again);
     }
 
-    private List<Puzzle> puzzles = new LinkedList<>();
+    public static void customPuzzle() {
+        Scanner kb = new Scanner(System.in);
+        System.out.println("Enter new Puzzle. Ex: 274351680");
+        System.out.print("==> ");
+        String puzzleSeq = kb.nextLine();
 
-    public PuzzleSolver(String fileName) {
-        readInPuzzles(fileName);
-        System.out.print(puzzles.get(0));
+        Puzzle puzzle = createPuzzle(puzzleSeq);
+        System.out.println(puzzle);
+
+        List<Action> puzzleActions = puzzle.getActions();
+
+        // For testing purposes
+        for (Action action : puzzleActions) {
+            System.out.println();
+            System.out.println(action.getActionType());
+            System.out.println(displayPuzzle(action.move()));
+        }
+    }
+
+    public static String displayPuzzle(int[][] puzzleBoard) {
+        StringBuilder string = new StringBuilder();
+        for (int i = 0; i < puzzleBoard.length; i++) {
+            for (int j = 0; j < puzzleBoard.length; j++) {
+                string.append(puzzleBoard[i][j]);
+                string.append(" ");
+            }
+            string.append("\n");
+        }
+        return string.toString();
     }
 
     /**
      * This method reads in a puzzle from a simple text file and adds each puzzle to the list of Puzzles.
      * @param puzzleFileName
      */
-    private void readInPuzzles(String puzzleFileName) {
+    public static List<Puzzle> readInPuzzles(String puzzleFileName) {
         try {
+            List<Puzzle> puzzles = new LinkedList<>();
             List<String> strings = Files.readAllLines(Paths.get(puzzleFileName));
             Iterator<String> iter = strings.iterator();
+
             while (iter.hasNext()) {
-                puzzles.add(createPuzzle(iter.next()));
+                Puzzle puzzle = createPuzzle(iter.next());
+                puzzles.add(puzzle);
             }
+            return puzzles;
         } catch (IOException e) {
             System.out.println("Error reading File!!");
         }
+        return null;
     }
+
 
     /**
      * This method takes in a string puzzle sequence ("075648123") and returns it to as a Puzzle.
      * @param puzzleSeq A string representation of the puzzle.
      * @return Puzzle
      */
-    private Puzzle createPuzzle(String puzzleSeq) {
+    public static Puzzle createPuzzle(String puzzleSeq) {
         final int BOARD_SIZE = 3; // 3 x 3 board
         List<Integer> numSeq = new LinkedList<>();
 

@@ -11,6 +11,15 @@ public class Puzzle {
     private int emptyRow;
     private int emptyCol;
 
+    public Puzzle(int[][] puzzle) {
+//        this.verifyPuzzle(this.getCopy(puzzle));
+        this.puzzleBoard = this.getCopy(puzzle);
+        this.puzzleSize = this.puzzleBoard.length;
+
+        this.updateEmptyTileLocation();
+        this.actions = this.determineMovements();
+    }
+
     public Puzzle(List<Integer> numbers, int puzzleSize) {
         this.numbers = numbers;
         this.puzzleSize = puzzleSize;
@@ -21,24 +30,25 @@ public class Puzzle {
         this.actions = this.determineMovements();
     }
 
-    public void setPuzzle(int[][] incomingPuzzle) throws Exception {
+    public void setPuzzle(int[][] incomingPuzzle) {
         // Verify puzzle dimensions are correct
-        if (incomingPuzzle.length == this.puzzleSize) {
-            for (int i = 0; i < this.puzzleSize; i++) {
-                if (incomingPuzzle[i].length != this.puzzleSize) {
-                    throw new Exception("Incoming Puzzle not of correct dimension!");
-                }
-            }
-        } else {
-            throw new Exception("Incoming Puzzle not of correct dimension!");
-        }
+//        this.verifyPuzzle(this.getCopy(incomingPuzzle));
         this.puzzleBoard = incomingPuzzle;
+        this.puzzleSize = puzzleBoard.length;
         this.updateEmptyTileLocation();
         this.actions = this.determineMovements();
     }
 
+    public int getValue(int row, int col) {
+        return this.puzzleBoard[row][col];
+    }
+
     public int[][] getPuzzle() {
         return this.getCopy(this.puzzleBoard);
+    }
+
+    public int getSize() {
+        return this.puzzleSize;
     }
 
     public List<Action> getActions() {
@@ -119,5 +129,17 @@ public class Puzzle {
             }
         }
         return copy;
+    }
+
+    private void verifyPuzzle(int[][] incomingPuzzle) throws Exception {
+        if (incomingPuzzle.length == this.puzzleSize) {
+            for (int i = 0; i < this.puzzleSize; i++) {
+                if (incomingPuzzle[i].length != this.puzzleSize) {
+                    throw new Exception("Incoming Puzzle not of correct dimension!");
+                }
+            }
+        } else {
+            throw new Exception("Incoming Puzzle not of correct dimension!");
+        }
     }
 }

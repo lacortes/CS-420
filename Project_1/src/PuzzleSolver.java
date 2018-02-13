@@ -1,10 +1,7 @@
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public final class PuzzleSolver {
     public static void main(String[] args) {
@@ -67,13 +64,12 @@ public final class PuzzleSolver {
         Puzzle puzzle = createPuzzle(puzzleSeq);
         System.out.println(puzzle);
 
-        List<Action> puzzleActions = puzzle.getActions();
+        Search search = new Search(new MisplacedTiles());
+        Stack<Puzzle> solution = search.starSearch(puzzle);
 
-        // For testing purposes
-        for (Action action : puzzleActions) {
+        while (!solution.empty()) {
             System.out.println();
-            System.out.println(action.getActionType());
-            System.out.println(displayPuzzle(action.move()));
+            System.out.println(solution.pop());
         }
     }
 

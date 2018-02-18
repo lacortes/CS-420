@@ -1,11 +1,19 @@
 package cortes.luis;
 
-public class Queen {
+public class Queen implements Cloneable{
     private int row;
     private int col;
 
     public Queen(int row, int col) {
         this.row = row;
+        this.col = col;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public void setCol(int colun) {
         this.col = col;
     }
 
@@ -26,5 +34,18 @@ public class Queen {
             return true;
         else
             return false;
+    }
+
+    @Override
+    protected Queen clone() throws CloneNotSupportedException {
+        Queen queenCopy = (Queen) super.clone();
+        queenCopy.row = this.row;
+        queenCopy.col = this.col;
+        return queenCopy;
+    }
+
+    @Override
+    public String toString() {
+        return "{" + row + ", " + col + "}";
     }
 }

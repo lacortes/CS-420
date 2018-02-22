@@ -1,7 +1,9 @@
 package cortes.luis;
 
 import cortes.luis.hill.climbing.*;
+import cortes.luis.genetic.*;
 
+import java.util.Arrays;
 import java.util.Stack;
 
 public class Main {
@@ -27,6 +29,10 @@ public class Main {
         BoardUtil.displayBoard(look.getBoard());
         System.out.println("Heurustic: "+look.getHeurustic()+"\n");
 
+        Individual individual = new Individual(8);
+        Arrays.stream(individual.getIndividual()).forEach(System.out::print);
+        System.out.println();
+        System.out.println("Fitness score: "+individual.getFitness());
 
      }
 

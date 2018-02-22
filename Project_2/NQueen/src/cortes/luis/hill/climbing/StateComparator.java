@@ -1,4 +1,4 @@
-package cortes.luis;
+package cortes.luis.hill.climbing;
 
 import java.util.Comparator;
 

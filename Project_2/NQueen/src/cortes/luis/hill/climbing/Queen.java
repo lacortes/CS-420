@@ -1,4 +1,4 @@
-package cortes.luis;
+package cortes.luis.hill.climbing;
 
 public class Queen implements Cloneable{
     private int row;

@@ -1,4 +1,6 @@
-package cortes.luis;
+package cortes.luis.hill.climbing;
+
+import cortes.luis.Algorithm;
 
 import java.util.*;
 

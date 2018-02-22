@@ -17,7 +17,14 @@ public class Individual {
         this.fitness = 0;
     }
 
-    public int[] getIndividual() {
+    public Individual(int[] genes) {
+        this.random = new Random();
+        this.genes = genes;
+        this.maxFitness = this.highestNonAttacking(genes.length);
+        this.fitness = 0;
+    }
+
+    public int[] getGenes() {
         return Arrays.copyOf(this.genes, this.genes.length);
     }
 
@@ -49,5 +56,13 @@ public class Individual {
     private int highestNonAttacking(int size) {
         // Formula to calculate highest number of non attacking queens
         return ((size - 1) * (size)) / 2;
+    }
+
+    @Override
+    public String toString() {
+        return "Individual{" +
+                "genes=" + Arrays.toString(genes) +
+                ", fitness=" + this.getFitness() +
+                '}';
     }
 }

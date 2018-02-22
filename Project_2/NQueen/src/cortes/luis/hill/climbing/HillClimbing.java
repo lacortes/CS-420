@@ -26,7 +26,7 @@ public class HillClimbing implements Algorithm {
                 tries.push(answer);
                 this.initBoard = BoardUtil.generateQueens(this.dimension);
                 restarts--;
-            } catch (CloneNotSupportedException ex) {ex.printStackTrace();};
+            } catch (CloneNotSupportedException ex) {ex.printStackTrace();}
         }
         return tries;
     }

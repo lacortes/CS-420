@@ -1,7 +1,9 @@
 package cortes.luis;
 
 import cortes.luis.hill.climbing.*;
+import cortes.luis.genetic.*;
 
+import java.util.Arrays;
 import java.util.Stack;
 
 public class Main {
@@ -18,7 +20,7 @@ public class Main {
 
         Queen[] test2 = {queen1, queen2, queen3, queen4, queen5, queen6, queen7, queen8};
 
-        Algorithm hillClimbing = new HillClimbing(25, 50);
+        Algorithm hillClimbing = new HillClimbing(8, 50);
         Stack<State> answer = hillClimbing.solve();
 
 //        while (!answer.isEmpty()) {
@@ -27,6 +29,8 @@ public class Main {
         BoardUtil.displayBoard(look.getBoard());
         System.out.println("Heurustic: "+look.getHeurustic()+"\n");
 
+        Algorithm gene = new GeneticAlgorithm(8);
+        gene.solve();
 
      }
 

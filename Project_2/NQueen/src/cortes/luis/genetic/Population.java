@@ -23,7 +23,7 @@ public class Population {
 
         for (int i = 1; i < this.individuals.length; i++) {
             Individual check = this.individuals[i];
-            if (check.getFitness() > check.getFitness())
+            if (check.getFitness() > fittest.getFitness())
                 fittest = check;
         }
         return fittest;

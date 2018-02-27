@@ -8,6 +8,7 @@ public class HillClimbing implements Algorithm {
     private int restarts;
     private int dimension;
     private Queen[] initBoard;
+    private long elapsedTime = 0;
 
     public HillClimbing(int dimension, int restarts) {
         this.restarts = restarts;
@@ -19,6 +20,7 @@ public class HillClimbing implements Algorithm {
     public Stack<State> solve() {
         Stack<State> tries = new Stack<>();
         int finalHeurustic = -1;
+        long start = System.currentTimeMillis();
         while (restarts > 0 && finalHeurustic != 0) {
             try {
                 State answer = hillClimbing();
@@ -28,7 +30,12 @@ public class HillClimbing implements Algorithm {
                 restarts--;
             } catch (CloneNotSupportedException ex) {ex.printStackTrace();}
         }
+        this.elapsedTime = System.currentTimeMillis() - start;
         return tries;
+    }
+
+    public long getElapsedTime() {
+        return this.elapsedTime;
     }
 
     //function HILL-CLIMBING(problem) returns a state that is a local maximum

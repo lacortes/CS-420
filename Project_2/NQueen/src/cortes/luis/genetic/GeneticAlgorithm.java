@@ -9,6 +9,7 @@ public class GeneticAlgorithm implements Algorithm {
     private int numOfQueens;
     private int maxFit;
     private int generations;
+    private long elapsedTime;
 
     public GeneticAlgorithm(int numOfQueens, int popSize) {
         this.numOfQueens = numOfQueens;
@@ -26,11 +27,16 @@ public class GeneticAlgorithm implements Algorithm {
         }
 
         Stack<Individual> stack = new Stack<>();
+        long start = System.currentTimeMillis();
         Individual answer = geneticAlg(population);
-
+        this.elapsedTime = System.currentTimeMillis() - start;
         stack.push(answer);
         return stack;
 
+    }
+
+    public long getElapsedTime() {
+        return this.elapsedTime;
     }
 
     public Individual geneticAlg(Population population) {

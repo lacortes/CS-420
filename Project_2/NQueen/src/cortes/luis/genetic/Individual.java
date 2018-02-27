@@ -44,6 +44,10 @@ public class Individual {
         return this.fitness;
     }
 
+    public int getMaxFitness() {
+        return this.maxFitness;
+    }
+
     private int[] generateIndividual(int size) {
         int[] ind = new int[size];
         for (int i = 0; i < ind.length; i++) {

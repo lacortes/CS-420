@@ -8,30 +8,104 @@ public class MinMax {
         this.timeLimit = (seconds * 1000);  // Convert second to milliseconds
     }
 
-    // function ALPHA-BETA-SEARCH(state) returns an action
+    public int maxmin(Board inBoard, boolean isMax) {
+        CellState currentPlayer;
+        long elapsedTime = System.currentTimeMillis();
+        Board board = new Board(inBoard.getCopy());
+
+        if (isMax)
+            currentPlayer = CellState.COMPUTER;
+        else
+            currentPlayer = CellState.USER;
+
+        int score = board.evaluate(currentPlayer);
+
+        if (elapsedTime >= timeLimit) {
+            return board.evaluate(currentPlayer);
+        }
+
+        if (score == 4)
+            return score;
+
+        if (score == -4)
+            return score;
+
+        if (!board.isMovesLeft())
+            return 0;
+
+        if (isMax) {
+            int best = Integer.MIN_VALUE;
+
+            for (int i = 0; i < Board.SIZE; i++) {
+                for (int j = 0; j < Board.SIZE; j++) {
+                    if (board.getCell(i, j) == CellState.EMPTY) {
+                        // Make the move
+                        board.makeMove(i, j, CellState.COMPUTER);
+
+                        best = Integer.max(best,
+                                maxmin(board, !isMax));
+
+                        // Undo the move
+                        board.makeMove(i, j, CellState.EMPTY);
+                    }
+                }
+            }
+            return best;
+        }
+
+        // If this minimizer's move
+        else {
+            int best = Integer.MAX_VALUE;
+
+            for (int i = 0; i < Board.SIZE; i++) {
+                for (int j = 0; j < Board.SIZE; j++) {
+                    if (board.getCell(i, j) == CellState.EMPTY) {
+                        // Make the move
+                        board.makeMove(i, j, CellState.USER);
+
+                        best = Integer.max(best,
+                                maxmin(board, !isMax));
+
+                        // Undo the move
+                        board.makeMove(i, j, CellState.EMPTY);
+                    }
+                }
+            }
+            return best;
+        }
+    }
+
+        // function ALPHA-BETA-SEARCH(state) returns an action
     public Move alphaBeta(Board board) {
-        startTime = System.currentTimeMillis();
         Board testBoard = new Board(board.getCopy());
 
         // v ←MAX-VALUE(state,−∞,+∞)
-        int v = maxValue(testBoard, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        System.out.println("Alpha-Beta: "+v);
+        startTime = System.currentTimeMillis();
+//        int v = maxValue(testBoard, Integer.MIN_VALUE, Integer.MAX_VALUE);
+//        System.out.println("Alpha-Beta: "+v);
 
         // return the action in ACTIONS(state) with value v
+        int bestValue = Integer.MIN_VALUE;
+        int bestRow = -1;
+        int bestCol = -1;
         for (int i = 0; i < Board.SIZE; i++) {
             for (int j = 0; j < Board.SIZE; j++) {
                 CellState cell = board.getCell(i, j);
 
                 if (cell == CellState.EMPTY) {
-                    // Determine if placing move here will yield same as v
-                    int eval = board.evalMove(i, j, CellState.COMPUTER);
-                    if (eval >= v) {
-                        return new Move(i, j, CellState.COMPUTER);
+                    testBoard.makeMove(i, j, CellState.COMPUTER);
+                    int moveVal = maxmin(testBoard, true);
+                    testBoard.makeMove(i, j, CellState.EMPTY);
+
+                    if (moveVal > bestValue) {
+                        bestRow = i;
+                        bestCol = j;
+                        bestValue = moveVal;
                     }
                 }
             }
         }
-        return null;
+        return new Move(bestRow, bestCol, CellState.COMPUTER);
     }
 
     // function MAX-VALUE(state,α, β) returns a utility value
@@ -42,7 +116,7 @@ public class MinMax {
         if (elapsedTime >= timeLimit) {
             return evaluation;
         }
-        System.out.println("MAX EVALUATION: "+evaluation);
+
         if (evaluation == 4) {
             return evaluation;
         }
